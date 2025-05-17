@@ -42,7 +42,7 @@
 package net.jforum.util.bbcode;
 
 /**
- * Transform a UBB tag like [javadoc]javax.servlet.http.HttpServletRequest[/javadoc]
+ * Transform a UBB tag like [javadoc]jakarta.servlet.http.HttpServletRequest[/javadoc]
  * into a link to the corresponding javadoc page.
  * If no package name is given, then java.lang is assumed.
  */
@@ -156,7 +156,7 @@ public class JavaDocLink implements Substitution {
         {"javax.resource", JAVAEE_URL},
         {"javax.security.auth.message", JAVAEE_URL}, // 6
         {"javax.security.jacc", JAVAEE_URL},
-        {"javax.servlet", JAVAEE_URL},
+        {"jakarta.servlet", JAVAEE_URL},
         {"javax.transaction", JAVAEE_URL},
         {"javax.validation", JAVAEE_URL}, // 6
         {"javax.webbeans", JAVAEE_URL}, // 6

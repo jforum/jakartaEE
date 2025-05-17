@@ -44,7 +44,7 @@ package net.jforum.context.web;
 
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import net.jforum.context.SessionContext;
 

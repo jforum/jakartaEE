@@ -2,18 +2,18 @@ package net.jforum.csrf;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletRequestContext;
 import org.owasp.csrfguard.CsrfGuard;
 import org.owasp.csrfguard.http.InterceptRedirectResponse;
 import org.owasp.csrfguard.log.LogLevel;
@@ -44,7 +44,7 @@ public class CsrfFilter implements Filter {
 
     private String getJForumMethodName (HttpServletRequest req) throws IOException {
         String module = null;
-        boolean multiPart = ServletFileUpload.isMultipartContent(new ServletRequestContext(req));
+        boolean multiPart = JakartaServletFileUpload.isMultipartContent(new JakartaServletRequestContext(req));
         /*
          * If a multipart request, we know that CSRF protection is needed (it is a post/upload).
 		 * Don't actually look up the module since that will cause the input stream

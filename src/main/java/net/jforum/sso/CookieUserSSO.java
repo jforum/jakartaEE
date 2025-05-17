@@ -42,7 +42,7 @@
  */
 package net.jforum.sso;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import net.jforum.ControllerUtils;
 import net.jforum.context.RequestContext;

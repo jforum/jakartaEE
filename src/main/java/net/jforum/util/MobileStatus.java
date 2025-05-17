@@ -41,8 +41,8 @@
  */
 package net.jforum.util;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * If this object is in the session, it represents the state of whether to user has made any mobile requests.

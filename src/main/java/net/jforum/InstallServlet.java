@@ -46,9 +46,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.owasp.csrfguard.CsrfGuard;
 
@@ -75,7 +75,7 @@ public class InstallServlet extends JForumBaseServlet
     private static final long serialVersionUID = 959359188496986295L;
 
     /** 
-     * @see javax.servlet.http.HttpServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
+     * @see jakarta.servlet.http.HttpServlet#service(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse)
      */
     @Override
     public void service(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException

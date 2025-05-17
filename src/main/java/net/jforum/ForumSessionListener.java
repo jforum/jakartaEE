@@ -42,10 +42,10 @@
  */
 package net.jforum;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 
 import org.apache.log4j.Logger;
 
@@ -58,7 +58,7 @@ public class ForumSessionListener implements HttpSessionListener
 	private static final Logger LOGGER = Logger.getLogger(ForumSessionListener.class);
 	
 	/** 
-	 * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
+	 * @see jakarta.servlet.http.HttpSessionListener#sessionCreated(jakarta.servlet.http.HttpSessionEvent)
 	 */
 	@Override public void sessionCreated(final HttpSessionEvent event) {
 		final HttpSession session = event.getSession(); 
@@ -68,7 +68,7 @@ public class ForumSessionListener implements HttpSessionListener
 	}
 
 	/** 
-	 * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
+	 * @see jakarta.servlet.http.HttpSessionListener#sessionDestroyed(jakarta.servlet.http.HttpSessionEvent)
 	 */
 	@Override public void sessionDestroyed(final HttpSessionEvent event) 
 	{

@@ -46,7 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author SergeMaslyukov 
@@ -78,12 +78,12 @@ public interface RequestContext
 	 * 
 	 * <p>
 	 * To reconstruct a URL with a scheme and host, use
-	 * {@link javax.servlet.http.HttpServletRequest#getRequestURL}.
+	 * {@link jakarta.servlet.http.HttpServletRequest#getRequestURL}.
 	 * 
 	 * @return a <code>String</code> containing the part of the URL from the protocol name up to
 	 *         the query string
 	 * 
-	 * @see javax.servlet.http.HttpServletRequest#getRequestURI
+	 * @see jakarta.servlet.http.HttpServletRequest#getRequestURI
 	 */
 	String getRequestURI();
 
@@ -171,7 +171,7 @@ public interface RequestContext
 
 	/**
 	 * Stores an attribute in this request. Attributes are reset between requests. This method is
-	 * most often used in conjunction with {@link javax.servlet.RequestDispatcher}.
+	 * most often used in conjunction with {@link jakarta.servlet.RequestDispatcher}.
 	 * 
 	 * <p>
 	 * Attribute names should follow the same conventions as package names. Names beginning with
@@ -195,10 +195,10 @@ public interface RequestContext
 	 * <p>
 	 * Attributes can be set two ways. The servlet container may set attributes to make available
 	 * custom information about a request. For example, for requests made using HTTPS, the attribute
-	 * <code>javax.servlet.request.X509Certificate</code> can be used to retrieve information on
+	 * <code>jakarta.servlet.request.X509Certificate</code> can be used to retrieve information on
 	 * the certificate of the client. Attributes can also be set programatically using
 	 * {@link #setAttribute}. This allows information to be embedded into a request before a
-	 * {@link javax.servlet.RequestDispatcher} call.
+	 * {@link jakarta.servlet.RequestDispatcher} call.
 	 * 
 	 * <p>
 	 * Attribute names should follow the same conventions as package names. This specification
@@ -319,7 +319,7 @@ public interface RequestContext
 	 * 
 	 * <p>
 	 * If the parameter data was sent in the request body, such as occurs with an HTTP POST request,
-	 * then reading the body directly via {@link javax.servlet.ServletRequest#getInputStream} or {@link javax.servlet.ServletRequest#getReader} can
+	 * then reading the body directly via {@link jakarta.servlet.ServletRequest#getInputStream} or {@link jakarta.servlet.ServletRequest#getReader} can
 	 * interfere with the execution of this method.
 	 * 
 	 * @param name a <code>String</code> specifying the name of the parameter

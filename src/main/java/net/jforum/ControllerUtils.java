@@ -46,7 +46,7 @@ package net.jforum;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

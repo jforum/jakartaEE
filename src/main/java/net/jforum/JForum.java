@@ -52,11 +52,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.owasp.csrfguard.CsrfGuard;
@@ -106,7 +106,7 @@ public class JForum extends JForumBaseServlet
     private static final long serialVersionUID = 7160936607198716279L;
 
     /**
-     * @see javax.servlet.Servlet#init(javax.servlet.ServletConfig)
+     * @see jakarta.servlet.Servlet#init(jakarta.servlet.ServletConfig)
      */
     @Override
     public void init(final ServletConfig config) throws ServletException
@@ -158,7 +158,7 @@ public class JForum extends JForumBaseServlet
     }
 
     /**
-     * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see jakarta.servlet.http.HttpServlet#service(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
      */
     @Override
     public void service(final HttpServletRequest req, final HttpServletResponse res) throws IOException, ServletException
@@ -389,7 +389,7 @@ public class JForum extends JForumBaseServlet
     }
 
     /** 
-     * @see javax.servlet.GenericServlet#destroy()
+     * @see jakarta.servlet.GenericServlet#destroy()
      */
     @Override
     public void destroy() 

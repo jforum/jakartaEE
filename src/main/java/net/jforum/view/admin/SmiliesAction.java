@@ -47,7 +47,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.log4j.Logger;
 
 import net.jforum.dao.DataAccessDriver;

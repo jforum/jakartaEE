@@ -1,7 +1,7 @@
 package net.jforum.csrf;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * Pass method instead of requestUri to match unprotected logic from csrf.properties

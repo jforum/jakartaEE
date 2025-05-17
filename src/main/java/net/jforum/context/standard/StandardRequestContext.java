@@ -48,7 +48,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import net.jforum.context.RequestContext;
 import net.jforum.context.SessionContext;

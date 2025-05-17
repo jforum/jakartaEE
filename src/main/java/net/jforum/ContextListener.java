@@ -42,9 +42,9 @@
 package net.jforum;
 
 import java.io.File;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
@@ -60,7 +60,7 @@ public class ContextListener implements ServletContextListener {
 
     private static final Logger LOGGER = Logger.getLogger(ContextListener.class);
     /* (non-Javadoc)
-     * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
+     * @see jakarta.servlet.ServletContextListener#contextInitialized(jakarta.servlet.ServletContextEvent)
      */
     @Override public void contextInitialized (ServletContextEvent sce) {
         final ServletContext application = sce.getServletContext();
@@ -82,7 +82,7 @@ public class ContextListener implements ServletContextListener {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
+     * @see jakarta.servlet.ServletContextListener#contextDestroyed(jakarta.servlet.ServletContextEvent)
      */
     @Override public void contextDestroyed (ServletContextEvent sce) {
 		// stop EventBus

@@ -45,7 +45,7 @@ package net.jforum;
 import java.io.IOException;
 import java.sql.Connection;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 

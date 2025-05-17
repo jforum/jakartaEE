@@ -44,8 +44,8 @@ package net.jforum.context;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author SergeMaslyukov 
@@ -116,8 +116,8 @@ public interface ResponseContext
 	/**
 	 * Returns the name of the character encoding (MIME charset) used for the body sent in this
 	 * response. The character encoding may have been specified explicitly using the
-	 * {@link javax.servlet.ServletResponse#setCharacterEncoding} or {@link #setContentType} methods, or implicitly using the
-	 * {@link javax.servlet.ServletResponse#setLocale} method. Explicit specifications take precedence over implicit
+	 * {@link jakarta.servlet.ServletResponse#setCharacterEncoding} or {@link #setContentType} methods, or implicitly using the
+	 * {@link jakarta.servlet.ServletResponse#setLocale} method. Explicit specifications take precedence over implicit
 	 * specifications. Calls made to these methods after <code>getWriter</code> has been called or
 	 * after the response has been committed have no effect on the character encoding. If no
 	 * character encoding has been specified, <code>ISO-8859-1</code> is returned.
@@ -152,7 +152,7 @@ public interface ResponseContext
 	void sendRedirect(String location) throws IOException;
 
 	/**
-	 * Returns a {@link javax.servlet.ServletOutputStream} suitable for writing binary data in the
+	 * Returns a {@link jakarta.servlet.ServletOutputStream} suitable for writing binary data in the
 	 * response. The servlet container does not encode the binary data.
 	 * 
 	 * <p>
@@ -160,7 +160,7 @@ public interface ResponseContext
 	 * 
 	 * Either this method or {@link #getWriter} may be called to write the body, not both.
 	 * 
-	 * @return a {@link javax.servlet.ServletOutputStream} for writing binary data
+	 * @return a {@link jakarta.servlet.ServletOutputStream} for writing binary data
 	 * @exception IllegalStateException if the <code>getWriter</code> method has 
 	 * been called on this response
 	 * @exception IOException if an input or output exception occurred
@@ -189,8 +189,8 @@ public interface ResponseContext
 	 * already been called for this response object
 	 * @exception IOException if an input or output exception occurred
 	 * 
-	 * @see javax.servlet.ServletResponse#getOutputStream
-	 * @see javax.servlet.ServletResponse#setCharacterEncoding
+	 * @see jakarta.servlet.ServletResponse#getOutputStream
+	 * @see jakarta.servlet.ServletResponse#setCharacterEncoding
 	 * 
 	 */
 	PrintWriter getWriter() throws IOException;
@@ -213,10 +213,10 @@ public interface ResponseContext
 	 * 
 	 * @param type a <code>String</code> specifying the MIME type of the content
 	 * 
-	 * @see javax.servlet.ServletResponse#setLocale
-	 * @see javax.servlet.ServletResponse#setCharacterEncoding
-	 * @see javax.servlet.ServletResponse#getOutputStream
-	 * @see javax.servlet.ServletResponse#getWriter
+	 * @see jakarta.servlet.ServletResponse#setLocale
+	 * @see jakarta.servlet.ServletResponse#setCharacterEncoding
+	 * @see jakarta.servlet.ServletResponse#getOutputStream
+	 * @see jakarta.servlet.ServletResponse#getWriter
 	 */
 	void setContentType(String type);
 

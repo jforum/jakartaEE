@@ -45,6 +45,7 @@ package net.jforum.context.web;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -52,14 +53,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletRequestContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -124,7 +125,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 			this.parseFriendlyURL(requestUri, servletExtension);
 		}
 		else if (isPost) {
-			isMultipart = ServletFileUpload.isMultipartContent(new ServletRequestContext(superRequest));
+			isMultipart = JakartaServletFileUpload.isMultipartContent(new JakartaServletRequestContext(superRequest));
 
 			if (isMultipart) {
 			    this.handleMultipart(superRequest, encoding);
@@ -262,8 +263,14 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 			tmpDir = new File(tmpPath);
 		}
 
-		ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory(100 * 1024, tmpDir));
-		upload.setHeaderEncoding(encoding);
+		 DiskFileItemFactory factory =
+			  DiskFileItemFactory.builder()
+				  .setPath(tmpDir.toPath())
+				  .setBufferSize(1200 * 1024)
+				  .get();
+
+		JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
+		upload.setHeaderCharset(Charset.forName(encoding));
 		upload.setFileCountMax(100);
 
 		try {
@@ -271,7 +278,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 
 			for (FileItem item : items) {
 				if (item.isFormField()) {
-					this.addParameter(item.getFieldName(), item.getString(encoding));
+					this.addParameter(item.getFieldName(), item.getString(Charset.forName(encoding)));
 				} else {
 					if (item.getSize() > 0) {
 						// We really don't want to call addParameter(), as it should
@@ -281,13 +288,13 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 				}
 			}
 		}
-		catch (FileUploadException e) {
+		catch (IOException e) {
 			throw new MultipartHandlingException("Error while processing multipart content: " + e);
 		}
 	}
 
 	/**
-	 * @see javax.servlet.ServletRequestWrapper#getParameterValues(java.lang.String)
+	 * @see jakarta.servlet.ServletRequestWrapper#getParameterValues(java.lang.String)
 	 */
 	@Override public String[] getParameterValues(final String name) 
 	{
@@ -338,7 +345,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 	}
 
 	/**
-	 * @see javax.servlet.ServletRequest#getParameter(java.lang.String)
+	 * @see jakarta.servlet.ServletRequest#getParameter(java.lang.String)
      * @param name String
 	 * @return String
 	 */
@@ -462,7 +469,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 	}
 
 	/**
-	 * @see javax.servlet.http.HttpServletRequestWrapper#getContextPath()
+	 * @see jakarta.servlet.http.HttpServletRequestWrapper#getContextPath()
 	 */
 	@Override public String getContextPath() 
 	{
@@ -480,7 +487,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 	 * This will generally retrieve the last non-local IP address.
 	 * Proxies may append something like "192.168.x.x". Removing those is the primary purpose. 
 	 * TODO: https://tools.ietf.org/html/rfc7239 should be considered first, before anything else
-	 * @see javax.servlet.ServletRequestWrapper#getRemoteAddr()
+	 * @see jakarta.servlet.ServletRequestWrapper#getRemoteAddr()
 	 */
 	@Override public String getRemoteAddr()
 	{
