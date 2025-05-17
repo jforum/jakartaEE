@@ -44,7 +44,7 @@ package net.jforum.http;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import net.jforum.context.web.WebRequestContext;
 

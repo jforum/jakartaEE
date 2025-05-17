@@ -6,7 +6,7 @@ package net.jforum;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.junit.Test;
 
