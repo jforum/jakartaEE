@@ -121,7 +121,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
+			<artifactId>lucene-analysis-common</artifactId>
 			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
@@ -257,7 +257,6 @@
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.7.4</version>
-			<classifier>jdk8</classifier>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
@@ -267,7 +266,7 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>12.10.0.jre8</version>
+			<version>12.10.0.jre11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
@@ -413,7 +412,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<lucene.version>8.11.4</lucene.version>
+		<lucene.version>9.12.1</lucene.version>
 		<slf4j.version>2.0.17</slf4j.version>
 		<!--
 		<maven.test.skip.exec>true</maven.test.skip.exec>

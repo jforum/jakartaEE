@@ -55,6 +55,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -121,9 +122,10 @@ public class LuceneSearch implements NewDocumentAdded
 		try {
 			read.lock();
 			TopDocs results = searcher.search(new TermQuery(new Term(SearchFields.Keyword.POST_ID, String.valueOf(postId))), 1);
+			StoredFields storedFields = searcher.storedFields();
 			ScoreDoc[] hits = results.scoreDocs;
 			for (ScoreDoc hit : hits) {
-				doc = searcher.doc(hit.doc);
+				doc = storedFields.document(hit.doc);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

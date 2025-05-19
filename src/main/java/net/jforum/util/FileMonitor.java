@@ -49,6 +49,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.commons.io.monitor.FileEntry;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -102,11 +104,11 @@ public class FileMonitor
         this.removeFileChangeListener(absoluteFilename);
        	LOGGER.info("Watching " + absoluteFilename);
 
-		FileAlterationObserver observer = new FileAlterationObserver(new File(filename).getParent());
-		observer.addListener(new MyFileAlterationListenerAdaptor(absoluteFilename, listener));
-
-		FileAlterationMonitor monitor = new FileAlterationMonitor(period, observer);
 		try {
+			FileAlterationObserver observer = FileAlterationObserver.builder().setRootEntry(new FileEntry(new File(filename).getParentFile())).get();
+			observer.addListener(new MyFileAlterationListenerAdaptor(absoluteFilename, listener));
+
+			FileAlterationMonitor monitor = new FileAlterationMonitor(period, observer);
 			monitor.start();
 			this.timerEntries.put(filename, monitor);
 		} catch (Exception ex) {

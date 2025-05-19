@@ -56,7 +56,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.ByteBuffersDirectory;
 
 /**
  * @author Rafael Steil
@@ -75,7 +75,7 @@ public class LuceneSettings
 
 	public void useRAMDirectory() throws IOException
 	{
-		this.directory = new RAMDirectory();
+		this.directory = new ByteBuffersDirectory();
 		final IndexWriterConfig conf = new IndexWriterConfig(analyzer()).setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 		final IndexWriter writer = new IndexWriter(this.directory, conf);
 		writer.close();

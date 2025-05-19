@@ -256,7 +256,7 @@ public final class UserCommon
 		}
 
 		final String fileName = Hash.md5(Integer.toString(user.getId()));
-		FileItem item = (FileItem)JForumExecutionContext.getRequest().getObjectParameter("avatar");
+		FileItem<?> item = (FileItem<?>) JForumExecutionContext.getRequest().getObjectParameter("avatar");
 		UploadUtils uploadUtils = new UploadUtils(item);
 
 		// Gets file extension

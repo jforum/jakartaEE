@@ -65,7 +65,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -130,7 +130,7 @@ public class LuceneIndexer
 				this.ramWriter.close();
 			}
 
-			this.ramDirectory = new RAMDirectory();
+			this.ramDirectory = new ByteBuffersDirectory();
 			final IndexWriterConfig conf = new IndexWriterConfig(this.settings.analyzer()).setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 			this.ramWriter = new IndexWriter(this.ramDirectory, conf);
 			this.ramNumDocs = SystemGlobals.getIntValue(ConfigKeys.LUCENE_INDEXER_RAM_NUMDOCS);

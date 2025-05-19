@@ -138,10 +138,10 @@ public class AttachmentCommon
 
 		for (int i = 0; i < total; i++) {
 			UploadUtils uploadUtils = null;
-			FileItem item = null;
+			FileItem<?> item = null;
 
 			if (isFileItem) {
-				item = (FileItem)this.request.getObjectParameter("file_" + i);
+				item = (FileItem<?>) this.request.getObjectParameter("file_" + i);
 				if (item == null) {
 					continue;
 				}

@@ -54,6 +54,7 @@ import java.util.List;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -87,11 +88,12 @@ public class LuceneContentCollector
 			//				results.length, args.fetchCount(), args.startFrom()));
 
 			IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(this.settings.directory()));
+			StoredFields storedFields = searcher.storedFields();
 			for (int docIndex = args.startFrom(), i = 0; 
 					i < finalResultSize;
 					docIndex++, i++) {
 				ScoreDoc hit = results[docIndex];
-		        Document doc = searcher.doc(hit.doc);
+				Document doc = storedFields.document(hit.doc);
 				postIds[i] = Integer.parseInt(doc.get(SearchFields.Keyword.POST_ID));
 			}
 			return this.retrieveRealPosts(postIds, query);

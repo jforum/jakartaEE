@@ -72,7 +72,7 @@ public class SmiliesAction extends AdminCommand
 		String imgName = "";
 
 		if (this.request.getObjectParameter("smilie_img") != null) {
-			FileItem item = (FileItem)this.request.getObjectParameter("smilie_img");
+			FileItem<?> item = (FileItem<?>) this.request.getObjectParameter("smilie_img");
 			UploadUtils uploadUtils = new UploadUtils(item);
 			String ext = uploadUtils.getExtension().toLowerCase();
 			String contentType = item.getContentType();

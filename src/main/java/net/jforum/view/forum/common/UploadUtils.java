@@ -57,14 +57,14 @@ import net.jforum.exceptions.ForumException;
  */
 public class UploadUtils
 {
-	private FileItem item;
+	private FileItem<?> item;
 	private byte[] bytes;
 	private String fileName;
 	private String mimeType;
 	private String extension = "";
 	private boolean isFileItem;
 
-	public UploadUtils(FileItem item)
+	public UploadUtils(FileItem<?> item)
 	{
 		this.item = item;
 		this.isFileItem = true;
