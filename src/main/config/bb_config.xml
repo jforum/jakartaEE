@@ -139,58 +139,6 @@
 		</replace>
 	</match>
 
-	<!-- Windows Media -->
-	<match name="wmv" removeQuotes="true" lockedForSmilies="wmv">
-		<regex>(?i)\[wmv\](.*?)\[/wmv\]</regex>
-		<replace>
-		<![CDATA[
-        <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player" width="450" height="370">
-            <param name="url" value="$1" /> 
-		    <param name="src"	value="$1" /> 
-	        <param name="showcontrols" value="true" /> 
-            <param name="autostart" value="true" />
-            <!--[if !IE]>-->   
-	        <object type="video/x-ms-wmv" data="$1"
-	            width="450" height="370">
-	            <param name="src" value="$1" />
-	            <param name="autostart" value="true" />
-	            <param name="controller" value="true" />
-	        </object>
-            <!--<![endif]-->    
-        </object>
-		]]>
-		</replace>
-	</match>
-
-    <!-- Real Media -->
-	<match name="rm" removeQuotes="true" lockedForSmilies="rm">
-		<regex>(?i)\[rm\](.*?)\[/rm\]</regex>
-		<replace>
-		<![CDATA[
-		<object id="rvocx" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" width="450" height="370">
-			<param name="src" value="$1" />
-			<param name="autostart" value="true" />
-			<param name="controls" value="ImageWindow" />
-			<param name="console" value="video" />
-			<param name="loop" value="false" />
-			<embed src="$1" width="450" height="370" 
-			type="audio/x-pn-realaudio-plugin" controls="ImageWindow" console="video" autostart="true" loop="false">
-			</embed>
-        </object>
-	    <br />
-        <object id="rvocx" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" width="450" height="30" />
-			<param name="src" value="$1" />
-			<param name="autostart" value="true" />
-			<param name="controls" value="ControlPanel" />
-			<param name="console" value="video" />
-			<embed src="$1" width="450" height="30" 
-			type="audio/x-pn-realaudio-plugin" controls="ControlPanel" console="video" autostart="true">
-			</embed>
-		</object>
-		]]>
-		</replace>
-	</match>
-
 	<!-- Automatic URL matching -->
 	<match name="auto-url" removeQuotes="true" alwaysProcess="true">
 		<regex>(^|[\n ]|\()([\w]+?://[^ \"\n\r\t&lt;\)\[]*[^ \"\n\r\t&lt;\)\[\.,;:])</regex>
