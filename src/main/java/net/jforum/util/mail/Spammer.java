@@ -64,8 +64,8 @@ import jakarta.mail.event.TransportListener;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-import net.markenwerk.utils.mail.dkim.DkimMessage;
-import net.markenwerk.utils.mail.dkim.DkimSigner;
+import org.simplejavamail.utils.mail.dkim.DkimMessage;
+import org.simplejavamail.utils.mail.dkim.DkimSigner;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
