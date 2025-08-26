@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE bbConfig [
+<!ELEMENT bbConfig (match+)>
+<!ELEMENT match (regex, (replace|class-name))>
+<!ATTLIST match name CDATA #REQUIRED>
+<!ATTLIST match removeQuotes CDATA "false" >
+<!ATTLIST match lockedForSmilies CDATA #IMPLIED>
+<!ATTLIST match alwaysProcess CDATA "false" >
+<!ELEMENT regex (#PCDATA)>
+<!ELEMENT replace (#PCDATA)>
+<!ELEMENT class-name (#PCDATA)>
+]>
+<bbConfig>
+	<!-- CODE -->
+	<match name="code">
+		<regex>(?s)\[code\]\s*(.*?)\s*\[/code\]</regex>
+		<replace>
+		<![CDATA[
+ 		<pre class="line-numbers"><code class="language-java match-braces">$1</code></pre>
+		]]>
+		</replace>
+	</match>
+
+	<match name="code-highlight">
+		<regex>(?s)(?i)\[code=['"]?([a-z]*?[^'"])['"]?\]\s*(.*?)\s*\[/code\]</regex>
+		<replace>
+		<![CDATA[
+ 		<pre class="line-numbers"><code class="language-$1 match-braces">$2</code></pre>
+		]]>
+		</replace>
+	</match>
+
+	<match name="openSimpleQuote">
+		<regex>(?i)\[quote\]</regex>
+		<replace>
+		<![CDATA[
+		<blockquote class="uncited">
+			<div>
+		]]>
+		</replace>
+	</match>
+
+	<match name="openQuote">
+		<regex>(?i)\[quote=['"]?(.*?[^'"])['"]?\]</regex>
+		<replace>
+		<![CDATA[
+		<blockquote>
+			<div>
+				<cite>$1 wrote:</cite>
+		]]>
+		</replace>
+	</match>
+
+	<match name="closeQuote">
+		<regex>(?i)\[/quote\]</regex>
+		<replace>
+		<![CDATA[
+		    </div>
+		</blockquote>
+		]]>
+		</replace>
+	</match>
+
+	<!-- B -->
+	<match name="b">
+		<regex>(?s)(?i)\[b\](.*?)\[/b\]</regex>
+		<replace>
+		<![CDATA[
+		<b>$1</b>
+		]]>
+		</replace>
+	</match>
+
+	<!-- I -->
+	<match name="i">
+		<regex>(?s)(?i)\[i\](.*?)\[/i\]</regex>
+		<replace>
+		<![CDATA[
+		<i>$1</i>
+		]]>
+		</replace>
+	</match>
+
+	<!-- U -->
+	<match name="u">
+		<regex>(?s)(?i)\[u\](.*?)\[/u\]</regex>
+		<replace>
+		<![CDATA[
+		<u>$1</u>
+		]]>
+		</replace>
+	</match>
+
+	<!-- TT -->
+	<match name="tt">
+		<regex>(?s)(?i)\[tt\](.*?)\[/tt\]</regex>
+		<replace>
+		<![CDATA[
+		<tt>$1</tt>
+		]]>
+		</replace>
+	</match>
+
+	<!-- STRIKE -->
+	<match name="strike">
+		<regex>(?s)(?i)\[strike\](.*?)\[/strike\]</regex>
+		<replace>
+		<![CDATA[
+		<strike>$1</strike>
+		]]>
+		</replace>
+	</match>
+
+	<!-- LIST -->
+	<match name="list">
+		<regex>(?s)(?i)\[list\](.*?)\[/list\]</regex>
+		<replace>
+		<![CDATA[
+		<li>$1</li>
+		]]>
+		</replace>
+	</match>
+
+	<!-- HR -->
+	<match name="hr">
+		<regex>\[hr\]</regex>
+		<replace>
+		<![CDATA[<hr>]]>
+		</replace>
+	</match>
+
+	<!-- IMG -->
+	<match name="img" removeQuotes="true" lockedForSmilies="img">
+		<regex>(?i)\[img\](.*?)\[/img\]</regex>
+		<replace>
+		<![CDATA[
+		<img src="$1" alt="image" />
+		]]>
+		</replace>
+	</match>
+
+	<!-- Automatic URL matching -->
+	<match name="auto-url" removeQuotes="true" alwaysProcess="true">
+		<regex>(^|[\n ]|\()([\w]+?://[^ \"\n\r\t&lt;\)\[]*[^ \"\n\r\t&lt;\)\[\.,;:])</regex>
+		<replace>
+		<![CDATA[
+		$1<a class="snap_shots" href="$2" target="_blank">$2</a>
+		]]>
+		</replace>
+	</match>
+
+	<match name="auto-url-simple" removeQuotes="true" alwaysProcess="true">
+		<regex>(^|[\n ]\()(www\.[^ \"\t\n\r&lt;\)\[]*[^ \"\n\r\t&lt;\)\[\.,;:])</regex>
+		<replace>
+		<![CDATA[
+		$1<a class="snap_shots" href="http://$2" target="_blank">$2</a>
+		]]>
+		</replace>
+	</match>
+
+	<match name="auto-ftp-simple" removeQuotes="true" alwaysProcess="true">
+		<regex>(^|[\n ]\()(ftp\.[^ \"\t\n\r&lt;\)\[]*)</regex>
+		<replace>
+		<![CDATA[
+		$1<a href="ftp://$2" target="_blank">$2</a>
+		]]>
+		</replace>
+	</match>
+
+	<match name="auto-email" removeQuotes="true" alwaysProcess="true">
+		<regex>(^|[\n ])([a-z0-9&amp;\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)</regex>
+		<replace>
+		<![CDATA[
+		$1<a href="mailto:$2@$3">$2@$3</a>
+		]]>
+		</replace>
+	</match>
+
+	<!-- URL -->
+	<!-- This is susceptible to XSS attacks, hence it was replaced by a Java class.
+	<match name="simple-url" removeQuotes="true" lockedForSmilies="url">
+		<regex>(?i)\[url\](.*?)\[/url\]</regex>
+		<replace>
+		<![CDATA[
+		<a class="snap_shots" href="$1" target="_blank">$1</a>
+		]]>
+		</replace>
+	</match>
+	-->
+
+	<!-- URL -->
+	<match name="simple-url" lockedForSmilies="url">
+		<regex>(?i)\[url\](.*?)\[/url\]</regex>
+		<class-name>net.jforum.util.bbcode.PlainURLLink</class-name>
+	</match>
+
+	<!-- URL=?? -->
+	<match name="descriptive-url" removeQuotes="true" lockedForSmilies="url">
+		<regex>(?i)\[url=['"]?(.*?[^'"])['"]?\](.*?)\[/url\]</regex>
+		<replace>
+		<![CDATA[
+		<a class="snap_shots" href="$1" target="_blank">$2</a>
+		]]>
+		</replace>
+	</match>
+
+	<!-- COLOR -->
+	<match name="color" removeQuotes="true">
+		<regex>(?s)(?i)\[color=['"]?(.*?[^'"])['"]?\](.*?)\[/color\]</regex>
+		<replace>
+		<![CDATA[
+		<font color="$1">$2</font>
+		]]>
+		</replace>
+	</match>
+
+	<!-- SIZE -->
+	<match name="size" removeQuotes="true">
+		<regex>(?s)(?i)\[size=['"]?(\s*\d+\s*)['"]?\](.*?)\[/size\]</regex>
+		<replace>
+		<![CDATA[
+		<span style="font-size: $1px; line-height: normal;">$2</span>
+		]]>
+		</replace>
+	</match>
+
+	<!-- Google -->
+	<match name="google" lockedForSmilies="google">
+		<regex>(?i)\[google\](.*?)\[/google\]</regex>
+		<replace>
+		<![CDATA[
+		<a class="snap_shots" href="https://www.google.com/search?q=$1" target="_blank">$1</a>(google)
+		]]>
+		</replace>
+	</match>
+
+	<!-- Wikipedia -->
+	<match name="wikipedia" lockedForSmilies="wikipedia">
+		<regex>(?i)\[wikipedia\](.*?)\[/wikipedia\]</regex>
+		<replace>
+		<![CDATA[
+		<a class="snap_shots" href="https://en.wikipedia.org/wiki/$1" target="_blank">$1</a>(wikipedia)
+		]]>
+		</replace>
+	</match>
+
+	<match name="wikipedia-non-english" lockedForSmilies="wikipedia">
+		<regex>(?i)\[wikipedia=([a-z]+)\](.*?)\[/wikipedia\]</regex>
+		<replace>
+		<![CDATA[
+		<a class="snap_shots" href="https://$1.wikipedia.org/wiki/$2" target="_blank">$2</a>(wikipedia)
+		]]>
+		</replace>
+	</match>
+
+	<!-- YouTube -->
+	<match name="youtube" lockedForSmilies="youtube">
+		<regex>
+			<![CDATA[ (?i)\[youtube\]https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&#+%\w]*(?:['\"][^<>]*>|<\/a>))[?=&#+%\w\.\-]*\[/youtube\] ]]>
+		</regex>
+		<replace>
+			<![CDATA[
+                <div class="videoContainer">
+                	<iframe width="640" height="400" src="https://www.youtube-nocookie.com/embed/$1" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+                </div>
+                ]]>
+		</replace>
+	</match>
+
+	<!-- Vimeo -->
+	<match name="vimeo" lockedForSmilies="vimeo">
+		<regex>
+			(?i)\[vimeo\]http[s]?://(?:[0-9A-Z-]+\.)?vimeo.com/(.*?)\[/vimeo\]
+		</regex>
+		<replace>
+			<![CDATA[
+				<iframe width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen"
+					src="https://player.vimeo.com/video/$1?title=0&byline=0&portrait=0&badge=0">
+				</iframe>
+                ]]>
+		</replace>
+	</match>
+
+	<!-- Dailymotion -->
+	<match name="dailymotion" lockedForSmilies="dailymotion">
+		<regex>
+			(?i)\[dailymotion\]http[s]?://(?:[a-z]+\.)?dailymotion.com/video/(.*?)\[/dailymotion\]
+		</regex>
+		<replace>
+			<![CDATA[
+				<iframe width="640" height="480" frameborder="0" allowfullscreen="allowfullscreen"
+					src="https://www.dailymotion.com/embed/video/$1"
+				</iframe>
+                ]]>
+		</replace>
+	</match>
+
+	<!-- Javadoc -->
+	<match name="javadoc" lockedForSmilies="javadoc">
+		<regex>(?i)\[javadoc\](.*?)\[/javadoc\]</regex>
+		<class-name>net.jforum.util.bbcode.JavaDocLink</class-name>
+	</match>
+
+</bbConfig>

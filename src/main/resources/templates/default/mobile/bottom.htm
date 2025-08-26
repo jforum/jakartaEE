@@ -1,0 +1,15 @@
+<br />
+<#if logged>
+	<a id="logout" href="${JForumContext.encodeURL("/user/logout")}">${I18n.getMessage("ForumBase.logout")} </a>
+</#if>
+<#if !logged>
+	<a id="register" href="${JForumContext.encodeURL("/user/insert")}">${I18n.getMessage("ForumBase.register")}</a> /
+	<a id="login" href="${JForumContext.encodeURL("/user/login")}">${I18n.getMessage("ForumBase.login")}</a>
+</#if>
+&nbsp;|&nbsp;
+<a href="?nonMobile=true" rel="nofollow">${I18n.getMessage("ForumBase.desktopView")}</a>
+&nbsp;|&nbsp;
+<a href="#top"><img src="${contextPath}/templates/default/mobile/images/up_arrow.png" width="10" height="10" alt="Jump to top of page" /></a>
+<a name="bottom"></a>
+</body>
+</html>

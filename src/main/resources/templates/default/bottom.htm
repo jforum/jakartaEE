@@ -1,0 +1,22 @@
+</td>
+</tr>
+	<tr>
+		<td align="center">
+			<span class="gen">
+				<a href="?nonMobile=false" rel="nofollow">${I18n.getMessage("ForumBase.mobileView")}</a>
+				<#if session?exists && session.isAdmin()>&bull; <a id="adminpanel" href='${JForumContext.encodeURL("/admBase/login")}'>${I18n.getMessage("ForumBase.admin")}</a></#if>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			<span class="copyright">Powered by <a class="copyright" href="https://jforum.net/" target="_blank">JForum ${version}</a> &copy; 2025 JForum Team &bull; Maintained by <a class="copyright" href="https://www.andowson.com/" target="_blank">Andowson Chang</a> and <a class="copyright" href="https://www.ulfdittmer.com/" target="_blank">Ulf Dittmer</a></span>
+		</td>
+	</tr>
+</table>
+<#if hasCodeBlock?default(false)>
+	<#include "highlighter_js.htm"/>
+</#if>
+<iframe src="${contextPath}/ping_session.jsp" height="0" width="0" frameborder="0" scrolling="no" title="session keeper"></iframe>
+</body>
+</html>

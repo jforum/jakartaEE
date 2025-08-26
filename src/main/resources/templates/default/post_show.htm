@@ -1,0 +1,441 @@
+<#include "header.htm"/>
+<#import "../macros/pagination.ftl" as pagination/>
+<#import "../macros/presentation.ftl" as presentation/>
+
+<#if bannerPages?contains("topic")>
+	<#assign position = 0 />
+	<#include "banner.htm"/>
+</#if>
+
+<script type="text/javascript" src="${jQueryURL}"></script>
+<script type="text/javascript" src="${contextPath}/templates/${templateName}/js/post_show.js?${startupTime}"></script>
+<script type="text/javascript" src="${contextPath}/templates/${templateName}/js/post.js?${startupTime}"></script>
+<script type="text/javascript" src="${contextPath}/templates/${templateName}/js/pagination.js?${startupTime}"></script>
+<#if socialEnabled>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/templates/${templateName}/styles/shariff.complete.css" />
+</#if>
+
+<script type="text/javascript">
+<#include "js/karma.js">
+<#include "js/utils.js"/>
+
+<#if logged>
+	var watchURL = "${JForumContext.encodeURL("/posts/watch/${start}/${topic.id}")}";
+	var unwatchURL = "${JForumContext.encodeURL("/posts/unwatch/${start}/${topic.id}")}";
+	var unwatchHandler = function() { turnOn=false; toggleWatch(); return false; };
+	var watchHandler = function() { turnOn=true; toggleWatch(); return false; };
+	var turnOn;
+
+	function toggleWatch () {
+		$.ajax({
+			url: turnOn ? watchURL : unwatchURL,
+			type: 'POST',
+			dataType: 'json',
+			headers: {'OWASP_CSRFTOKEN': '${OWASP_CSRFTOKEN!""}'},
+			success: function (data) {
+				alert(data.message);
+				if (turnOn) {
+					$(".toggleWatchLink")[0].href = unwatchURL;
+					$(".toggleWatchLink")[0].onclick = unwatchHandler;
+					$("#toggleWatchLinkID")[0].innerHTML = '<img src="${contextPath}/templates/${templateName}/images/unwatch.gif" align="middle" alt="Watch" />&nbsp;${I18n.getMessage("PostShow.unwatch")}';
+				} else {
+					$(".toggleWatchLink")[0].href = watchURL;
+					$(".toggleWatchLink")[0].onclick = watchHandler;
+					$("#toggleWatchLinkID")[0].innerHTML = '<img src="${contextPath}/templates/${templateName}/images/watch.gif" align="middle" alt="Watch" />&nbsp;${I18n.getMessage("PostShow.watch")}';
+				}
+			}
+		});
+	}
+</#if>
+
+<#if canRemove || isModerator || isAdmin>
+	function confirmDelete(postId)
+	{
+		if (confirm("${I18n.getMessage("Moderation.ConfirmPostDelete")}")) {
+			var reason = prompt("${I18n.getMessage("ModerationLog.changeReason")}");
+
+			if (reason == null || reason == "") {
+				alert("${I18n.getMessage("ModerationLog.reasonIsEmpty")}");
+				return false;
+			}
+			else {
+				var link = document.getElementById("delete" + postId);
+				link.href += "?log_description=" + encodeURIComponent(reason) + "&log_type=1";
+			}
+
+			return true;
+		}
+		
+		return false;
+	}
+</#if>
+</script>
+
+<#if moderator>
+	<script type="text/javascript" src="${JForumContext.encodeURL("/js/list/moderation")}"></script>
+</#if>
+
+<table cellspacing="0" cellpadding="10" width="100%" align="center">
+	<tr>
+		<td class="bodyline">
+			<table cellspacing="2" cellpadding="2" width="100%">
+				<tr>
+					<td valign="middle" align="left">
+						<span class="maintitle"><a href="${JForumContext.encodeURL("/posts/list/${topic.id}")}" name="top" class="maintitle" id="top">${topic.title?html}</a></span>
+						<#if rssEnabled>
+							<a href="${JForumContext.encodeURL("/rss/topicPosts/${topic.id}")}"><img src="${contextPath}/templates/${templateName}/images/xml_button.gif" alt="RSS feed" title="RSS feed" /></a>
+						</#if>
+					</td>
+					<#if socialEnabled>
+						<td valign="middle" align="right" width="30%">
+							<div class="shariff"
+								data-button-style="icon"
+								data-lang="${(language?default("en_US"))?keep_before("_")}"
+								data-mail-url="mailto:"
+								<#assign idx = 0/>
+								data-services="[
+								<#list socialSites?split(",") as site>
+									<#assign trimSite = site?trim/>
+									<#if (idx > 0)>,</#if>
+									&quot;${trimSite}&quot;
+									<#assign idx = idx+1/>
+								</#list>
+								]">
+							</div>
+						</td>
+					</#if>
+				</tr>
+			</table>
+
+			<table cellspacing="2" cellpadding="2" width="100%">
+				<tr>
+					<#if !readonly && topic.type != TOPIC_WIKI>
+					<td width="50" align="left" valign="bottom" nowrap="nowrap">
+					</#if>
+					<#if topic.status == STATUS_LOCKED>
+						<span class="icon_reply_locked"><img src="${contextPath}/images/transp.gif" alt="" /></span>
+					<#else>
+						<#if !readonly && topic.type != TOPIC_WIKI>
+							<a href="${JForumContext.encodeURL("/posts/reply/${start}/${topic.id}")}" rel="nofollow" class="icon_reply nav"><img src="${contextPath}/images/transp.gif" alt="" /></a>
+						<#else>
+							<#assign colspan = "2"/>
+						</#if>
+					</#if>
+					</td>
+					<td valign="middle" align="left" colspan="${colspan?default("0")}">
+						<span class="nav">
+						<a class="nav" href="${JForumContext.encodeURL("/forums/list")}">${I18n.getMessage("ForumListing.forumIndex")}</a> 
+            			&raquo; <a class="nav" href="${JForumContext.encodeURL("/forums/show/${forum.id}")}">${forum.name?html}</a></span>
+					</td>
+					<td valign="middle" align="right"><#assign paginationData><@pagination.doPagination "list", topic.id/></#assign>${paginationData}</td>
+				</tr>
+			</table>
+
+			<table class="forumline" cellspacing="1" cellpadding="3" width="100%">
+				<#if poll?exists>
+					<tr>
+						<td class="cathead cattitle" align="center" colspan="2" nowrap="nowrap" width="100%">${I18n.getMessage("PostShow.pollTitle")}</td>
+					</tr>
+					<tr>
+						<td class="row1" colspan="2" align="center">
+							<#if (poll.open && canVoteOnPoll && !request.getParameter("viewResults")?exists)>
+								<form action="${JForumContext.encodeURL("/jforum")}" method="post">
+									<input type="hidden" name="action" value="vote" />
+									<input type="hidden" name="module" value="${moduleName}" />
+									<input type="hidden" name="poll_id" value="${poll.id}" />
+									<input type="hidden" name="topic_id" value="${topic.id}" />
+									<input type="hidden" name="OWASP_CSRFTOKEN" value="${OWASP_CSRFTOKEN!""}" />
+									<div class="poll">
+										<span class="strong">${poll.label?html}</span>
+										<table class="poll">
+										<#list poll.options as option>
+											<tr>
+												<td><input type="radio" name="poll_option" value="${option.id}" />${option.text?html}</td>
+											</tr>
+										</#list>
+										</table>
+										<input type="submit" value="${I18n.getMessage("PostShow.pollVote")}" /><br />
+										<span class="gensmall" style="text-align:center"><a href="${JForumContext.encodeURL("/posts/list/${topic.id}")}?viewResults=true">${I18n.getMessage("PostShow.showPollResults")}</a></span>
+									</div>
+								</form>
+							<#else>
+								<@presentation.renderPoll poll/>
+							</#if>
+						</td>
+					</tr>
+				</#if>
+				
+				<tr>
+					<th class="thleft" nowrap="nowrap">${I18n.getMessage("PostShow.author")}</th>
+					<th class="thright" nowrap="nowrap">${I18n.getMessage("PostShow.messageTitle")}</th>
+				</tr>
+
+				<!-- POST LISTING --> 
+				<#assign rowColor = ""/>
+				<#list posts as post>
+					<#if post_index % 2 == 0>
+						<#assign rowColor = "row1">
+					<#else>
+						<#assign rowColor = "row2">
+					</#if>
+	
+					<#assign user = users.get(post.userId)/>
+					<#assign canEditCurrentMessage = isAdmin || isModerator || (logged && (topic.type==TOPIC_WIKI || (post.canEdit && (editAfterReply || !post_has_next))) && topic.status != STATUS_LOCKED)/>
+					<#include "post_show_action_buttons_inc.htm"/>
+
+					<tr>
+						<!-- Username -->
+						<#assign rowspan = "3"/>
+						<#assign useSignature = (topic.type != TOPIC_WIKI && user.attachSignatureEnabled && user.signature?exists && user.signature?length > 0 && post.isSignatureEnabled())/>
+						<#if useSignature>
+							<#assign rowspan = "3"/>
+						<#else>
+							<#if topic.type != TOPIC_WIKI>
+								<#assign rowspan = "2"/>
+							<#else>
+								<#assign rowspan = "1"/>
+							</#if>
+						</#if>
+
+						<td class="${rowColor}" valign="top" align="left" rowspan="${rowspan}">
+							<#include "post_show_user_inc.htm"/>
+						</td>
+		
+						<!-- Message -->
+						<td class="${rowColor}" valign="top" id="post_text_${post.id}" width="100%">
+							<div class="postbody">${post.text}</div>
+
+							<!-- Attachments -->
+							<#if post.hasAttachments() && (canDownloadAttachments || attachmentsEnabled)>
+								<#assign attachments = am.getAttachments(post.id, post.forumId)/>
+
+								<#include "post_show_attachments_inc.htm"/>
+							</#if>
+
+							<#if logged && (post.editCount > 0) && post.editTime?exists>
+								<#if post.editCount == 1>
+									<#assign editCountMessage = "PostShow.editCountSingle"/>
+								<#else>
+									<#assign editCountMessage = "PostShow.editCountMany"/>
+								</#if>
+                                <p><i><span class="gensmall">${I18n.getMessage(editCountMessage, [post.editCount, post.formattedEditTime])}</span></i></p>
+							</#if>
+						</td>
+					</tr>
+
+					<#if useSignature>
+						<tr>
+							<td colspan="2" class="${rowColor}" width="100%"><hr/><span class="gensmall">${user.signature}</span></td>
+						</tr>
+					</#if>
+		
+					<#if topic.type != TOPIC_WIKI>
+						<tr> 
+							<td class="${rowColor}" valign="bottom" nowrap="nowrap" width="100%">
+								<#include "post_show_user_profile_inc.htm"/>					
+							</td>
+						</tr>
+					</#if>
+		
+					<tr>
+						<td class="spacerow" colspan="2"><img src="${contextPath}/templates/${templateName}/images/spacer.gif" alt="" width="1" /></td>
+					</tr>
+				</#list>
+				<!-- END OF POST LISTING -->
+		
+				<tr align="center">
+					<td class="catbottom" colspan="2">
+						<table cellspacing="0" cellpadding="0">
+							<tr>
+								<td align="center"><span class="gensmall">&nbsp;</span></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		
+			<table cellspacing="2" cellpadding="2" width="100%" align="center">
+				<tr>
+					<#if !readonly && topic.type != TOPIC_WIKI>
+					<td width="50" align="left" valign="bottom" nowrap="nowrap">
+					</#if>
+					<#if topic.status == STATUS_LOCKED>
+						<span class="icon_reply_locked"><img src="${contextPath}/images/transp.gif" alt="" /></span>
+					<#else>
+						<#if !readonly && topic.type != TOPIC_WIKI>
+							<a href="${JForumContext.encodeURL("/posts/reply/${start}/${topic.id}")}" rel="nofollow" class="icon_reply nav"><img src="${contextPath}/images/transp.gif" alt="" /></a>
+						<#else>
+							<#assign colspan = "2"/>
+						</#if>
+		  			</#if>
+					</td>
+
+					<td valign="middle" align="left" colspan="${colspan?default("0")}">
+						<span class="nav">
+						<a class="nav" href="${JForumContext.encodeURL("/forums/list")}">${I18n.getMessage("ForumListing.forumIndex")}</a> 
+            			&raquo; <a class="nav" href="${JForumContext.encodeURL("/forums/show/${forum.id}")}">${forum.name?html}</a>
+						</span>
+					</td>
+
+					<td valign="middle" align="right">${paginationData}</td>
+				</tr>
+			</table>
+			
+			<#if (logged || anonymousPosts) && (topic.status != STATUS_LOCKED || isModerator || isAdmin) && !readonly && topic.type != TOPIC_WIKI>
+			    <table width="100%" align="center">
+					<tr>
+						<td colspan="3">
+					<script type="text/javascript">
+					/* <![CDATA[ */
+					function newCaptcha()
+					{
+						document.getElementById("captcha_img").src = "${JForumContext.encodeURL("/captcha/generate")}?timestamp="+new Date().getTime();
+					}
+					
+					function activateQuickReply()
+					{
+						$("#captcha_img").attr("src", "${JForumContext.encodeURL("/captcha/generate/${timestamp}")}");
+						$("#quickReply").slideToggle('slow', function() {
+							window.scrollBy(0, 100);
+						});
+					}
+
+					function validatePostForm(f)
+					{
+						if (f.message.value.replace(/^\s*|\s*$/g, "").length == 0) {
+							alert("${I18n.getMessage("PostForm.textEmpty")}");
+							f.message.focus();
+						
+							return false;
+						}
+					
+						$("#icon_saving").css("display", "inline");
+						$("#btnSubmit").attr("disabled", "disabled").val("${I18n.getMessage("PostForm.saving")}...");
+						$("#btnCancel").attr("disabled", "disabled");
+					
+						return true;
+					}
+
+					function cancelOperation()
+					{
+						$("#captcha_img").attr("src", "");
+						$("#quickReply").slideToggle('slow', function() {
+							window.scrollBy(0, -100);
+						});
+						f.message.value = "";
+					}
+					/* ]]> */
+					</script>
+					
+					<form action="${JForumContext.encodeURL("/jforum")}?OWASP_CSRFTOKEN=${OWASP_CSRFTOKEN!""}" method="post" name="post" id="post" onsubmit="return validatePostForm(this);" enctype="multipart/form-data" accept-charset="${encoding}">
+						<input type="hidden" name="action" value="insertSave" />
+						<input type="hidden" name="module" value="posts" />
+						<input type="hidden" name="forum_id" value="${forum.id}" />
+						<input type="hidden" name="start" value="${start?default("")}" />
+						<input type="hidden" name="topic_id" value="${topic.id}" />
+						<input type="hidden" name="disable_html" value="1" />
+						<input type="hidden" name="quick" value="1" />
+						<input type="hidden" name="OWASP_CSRFTOKEN" value="${OWASP_CSRFTOKEN!""}" />
+						<table width="100%">
+							<tr>
+								<td align="center">
+									<img src="${contextPath}/templates/${templateName}/images/icon_mini_message.gif" align="bottom" alt="Message" />
+									<span class="nav"><a href="javascript:activateQuickReply()">${I18n.getMessage("PostForm.quickReply")}</a></span>
+								</td>
+							</tr>
+						</table>
+						<div align="center" style="display: none;" id="quickReply">
+							<table>
+								<tr>
+									<td align="center">
+										<textarea class="post" style="width: 350px" name="message" rows="10" cols="35" onkeyup="enterText(this);" onclick="enterText(this);" onselect="enterText(this);" onblur="leaveText();"></textarea>
+									</td>
+								</tr>
+								<#if needCaptcha?default(false)>
+									<tr>
+										<td>
+											<img align="middle" id="captcha_img" alt="Captcha" src="${contextPath}/images/transp.gif" />
+											<br />
+											<span class="gensmall">${I18n.getMessage("User.captchaResponse")}</span>
+											<input type="text" class="post" style="width: 80px; font-weight: bold;" maxlength="25" name="captcha_anwser" /> 
+											<br />
+											<span class="gensmall">${I18n.getMessage("User.hardCaptchaPart1")} <a href="#newCaptcha" onclick="newCaptcha()"><b>${I18n.getMessage("User.hardCaptchaPart2")}</b></a></span>
+										</td>
+									</tr>
+								</#if>
+								<tr>
+									<td align="right" valign="middle">
+										<input type="submit" id="btnSubmit" value="${I18n.getMessage("PostForm.submit")}" class="mainoption" />
+										<input type="button" id="btnCancel" value="${I18n.getMessage("cancel")}" class="mainoption" onclick="cancelOperation()"/>
+										<img src="${contextPath}/images/transp.gif" id="icon_saving" alt="" />
+									</td>
+								</tr>
+							</table>						
+					    </div>
+					</form>
+						</td>
+					</tr>
+
+				<#if isModerator || isAdmin>
+					<tr>
+						<td align="left" colspan="3">
+						<form action="${JForumContext.encodeURL("/jforum")}" method="post" name="formModeration" id="formModeration">
+					      <input type="hidden" name="action" value="doModeration" />
+					      <input type="hidden" name="module" value="moderation" />
+					      <input type="hidden" name="returnUrl" value="${JForumContext.encodeURL("/${moduleName}/${action}/${start}/${topic.id}")}" />
+					      <input type="hidden" name="forum_id" value="${topic.forumId}" />
+					      <input type="hidden" name="topic_id" value="${topic.id}" />
+					      <input type="hidden" name="log_type" value="0"/>
+					      <input type="hidden" name="log_description" />
+					      <input type="hidden" id="moderationTodo" />
+					      <input type="hidden" name="OWASP_CSRFTOKEN" value="${OWASP_CSRFTOKEN!""}" />
+					    </form>
+					  <@presentation.moderationImages/>
+						</td>
+					</tr>
+				</#if>
+			    </table>
+			</#if>
+
+			<table cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<td align="left" valign="top" class="gensmall">
+						<#if logged>
+							<img src="${contextPath}/templates/${templateName}/images/icon_bookmark.gif" align="middle" alt="Bookmark" />
+							<a href="#bookmark" onclick="addBookmark(2, ${topic.id});">${I18n.getMessage("Bookmarks.addTo")}</a>
+							<br />
+							<#if !watching>
+								<a class="toggleWatchLink" id="toggleWatchLinkID" href="${JForumContext.encodeURL("/posts/watch/${start}/${topic.id}")}"
+									onClick="turnOn=true; toggleWatch(); return false">
+									<img src="${contextPath}/templates/${templateName}/images/watch.gif" align="middle" alt="Watch" />&nbsp;${I18n.getMessage("PostShow.watch")}</a>
+							<#else>
+								<a class="toggleWatchLink" id="toggleWatchLinkID" href="${JForumContext.encodeURL("/posts/unwatch/${start}/${topic.id}")}"
+									onClick="turnOn=false; toggleWatch(); return false">
+									<img src="${contextPath}/templates/${templateName}/images/unwatch.gif" align="middle" alt="Unwatch" />&nbsp;${I18n.getMessage("PostShow.unwatch")}</a>
+							</#if>
+						</#if>
+					</td>
+					<td align="right"><@presentation.forumsComboTable/></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<#if bannerPages?contains("topic")>
+	<#assign position = 3 />
+	<#include "banner.htm"/>
+</#if>
+
+<a name="quick"></a>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	limitURLSize();
+});
+</script>
+<#if socialEnabled>
+	<script type="text/javascript" src="${contextPath}/templates/${templateName}/js/shariff.min.js?${startupTime}"></script>
+</#if>
+
+<#include "bottom.htm"/>

@@ -1,0 +1,76 @@
+<#if (position == 0) || (position == 3) &&
+	(bannerCommon.activeBannerExists(position + 1)
+	|| bannerCommon.activeBannerExists(position + 2)
+	|| bannerCommon.activeBannerExists(position + 3)) >
+<!-- Banners -->
+<P>
+<table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="20%">
+       <#if bannerCommon.activeBannerExists(position + 1)>
+	 <table width="100%" cellspacing="2" cellpadding="2">
+             <#assign banner = bannerCommon.getBanner()/>
+               <tr><td><div align="center">
+                 <#switch banner.type>
+                   <#case 0>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank"><img src="${banner.name?html}" alt="${banner.description}" <#if banner.width != 0>width="${banner.width}"</#if> <#if banner.height != 0>height="${banner.height}"</#if>/></a>
+                     <#break>
+                   <#case 2>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank">${banner.name?html}</a>
+                     <#break>
+                   <#case 4>
+                     ${banner.name}
+                     <#break>
+                 </#switch>
+               </div></td></tr>
+             <tr><td><div align="center"></div></td></tr>
+	</table>
+       </#if>
+    </td>
+    <td width="60%">
+       <#if bannerCommon.activeBannerExists(position + 2)>
+	 <table width="100%" cellspacing="2" cellpadding="2">
+             <#assign banner = bannerCommon.getBanner()/>
+               <tr><td><div align="center">
+                 <#switch banner.type>
+                   <#case 0>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank"><img src="${banner.name?html}" alt="${banner.description}" <#if banner.width != 0>width="${banner.width}"</#if> <#if banner.height != 0>height="${banner.height}"</#if>/></a>
+                     <#break>
+                   <#case 2>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank">${banner.name?html}</a>
+                     <#break>
+                   <#case 4>
+                     ${banner.name}
+                     <#break>
+                 </#switch>
+               </div></td></tr>
+             <tr><td><div align="center"></div></td></tr>
+	</table>
+       </#if>
+    </td>
+    <td width="20%">
+       <#if bannerCommon.activeBannerExists(position + 3)>
+	 <table width="100%" cellspacing="2" cellpadding="2">
+             <#assign banner = bannerCommon.getBanner()/>
+               <tr><td><div align="center">
+                 <#switch banner.type>
+                   <#case 0>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank"><img src="${banner.name?html}" alt="${banner.description}" <#if banner.width != 0>width="${banner.width}"</#if> <#if banner.height != 0>height="${banner.height}"</#if>/></a>
+                     <#break>
+                   <#case 2>
+                     <a href="${contextPath}/banner/redirect/${banner.id}${extension}" target="_blank">${banner.name?html}</a>
+                     <#break>
+                   <#case 4>
+                     ${banner.name}
+                     <#break>
+                 </#switch>
+               </div></td></tr>
+             <tr><td><div align="center"></div></td></tr>
+	</table>
+       </#if>
+    </td>
+  </tr>
+</table>
+<P>
+<!-- End Banners -->
+</#if>

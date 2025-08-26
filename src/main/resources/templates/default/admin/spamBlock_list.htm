@@ -1,0 +1,49 @@
+<#include "header.htm"/>
+
+<table class="forumline" width="100%" cellpadding="5" border="0">
+	<tr>
+		<th class="thhead" height="25">${I18n.getMessage("SpamBlock.createNew")}</th>
+	</tr>
+	<tr>
+		<td class="row1 gen">
+			<form accept-charset="${encoding}" name="form" action="${JForumContext.encodeURL("/jforum")}" method="post">
+				<input type="hidden" name="module" value="${moduleName}" />
+				<input type="hidden" name="action" value="insert" />
+				<input type="hidden" name="OWASP_CSRFTOKEN" value="${OWASP_CSRFTOKEN!""}" />
+				<label>${I18n.getMessage("SpamBlock.pattern")}: </label>
+				<input type="text" name="pattern" size="40" />
+				<input type="submit" value="${I18n.getMessage("SpamBlock.create")}"/>
+			</form>
+		</td>
+	</tr>
+</table>
+
+<BR>
+
+<table class="forumline" width="100%" cellpadding="5" cellspacing="1" border="0">
+	<thead>
+		<tr>
+			<th class="thhead" height="25" colspan="2">${I18n.getMessage("SpamBlock.existing")}</th>
+		</tr>
+		<tr>
+			<td class="row2" align="center"><span class="gen"><b>${I18n.getMessage("SpamBlock.pattern")}</b></span></td>
+			<td class="row2" align="center"><span class="gen"><b>${I18n.getMessage("SpamBlock.delete")}</b></span></td>
+		</tr>
+	</thead>
+	<tbody>
+		<#list spamPatterns as pattern>
+		<tr align="center">
+			<form accept-charset="${encoding}" name="form" action="${JForumContext.encodeURL("/jforum")}" method="post">
+				<input type="hidden" name="module" value="${moduleName}" />
+				<input type="hidden" name="action" value="delete" />
+				<input type="hidden" name="pattern" value="${pattern?html}" />
+				<input type="hidden" name="OWASP_CSRFTOKEN" value="${OWASP_CSRFTOKEN!""}" />
+				<td class="row1 gen">${pattern?html}</td>
+				<td class="row1 gen"><input type="submit" value="${I18n.getMessage("SpamBlock.delete")}"/></td>
+			</form>
+		</tr>
+		</#list>
+	</tbody>
+</table>
+
+<#include "bottom.htm"/>

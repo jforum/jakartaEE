@@ -1,0 +1,56 @@
+<#if topic.type == TOPIC_WIKI>
+	<div style="filter: opacity(0.2)">
+</#if>
+<span class="genmed"><nobr><b><a href="${JForumContext.encodeURL("/user/profile/${user.id}")}">${user.username?html}</a></b></nobr></span>
+<br />
+<#if showKarma && karmaEnabled && post.userId != 1>
+	<nobr><script type="text/javascript">writeStars(${user.karma.karmaPoints}, "${user.id}${post.id}");</script></nobr>
+	<br />
+</#if>
+
+<span class="gensmall">
+<#if post.userId != 1>
+	<#assign rankStr = rank.getRankTitle(user.rankId, user.totalPosts)/>
+	<#if rankStr?trim != "">
+		<nobr>${rankStr?html}</nobr><br/>
+	</#if>
+</#if>
+
+<#if showAvatar && (user.avatar?exists && user.avatar?length > 0)>
+	<#if user.isExternalAvatar() || user.avatar.startsWith("http://") || user.avatar.startsWith("https://")>
+		<#if avatarAllowExternalUrl>
+			<img src="${user.avatar?html}" alt="[Avatar]" height="${avatarMaxHeight}" width="${avatarMaxWidth}" />
+		</#if>
+	<#else>
+		<img src="${contextPath}/${avatarPath}/${user.avatar}" alt="[Avatar]" /><br />
+	</#if>
+</#if>
+<br /> 
+
+<#if post.userId != 1>
+	<nobr>${I18n.getMessage("PostShow.userRegistrationDate")}: ${user.registrationDay}</nobr><br />
+	<nobr>${I18n.getMessage("PostShow.userTotalMessages")}: ${user.totalPosts}</nobr>
+</#if>
+<br />
+
+<#if (user.from?exists && user.from?length > 0)>
+	<nobr>${I18n.getMessage("PostShow.userFrom")}: ${user.from?html}</nobr>
+	<br />
+</#if>
+
+<#if showIP && post.userIp?exists && (isModerator || isAdmin)>
+	<nobr>${I18n.getMessage("PostShow.userIP")}: <a href="${whoisUrl}${post.userIp}" target="_blank">${post.userIp}</a></nobr>
+	<br />
+</#if>
+
+<#if showOnline && (post.userId != 1) >
+	<#if user.isOnline()>
+		<span class="online">${I18n.getMessage("PostShow.userOnline")}</span>
+	<#else>
+		<span class="offline">${I18n.getMessage("PostShow.userOffline")} </span>
+	</#if>
+</#if>
+</span>
+<#if topic.type == TOPIC_WIKI>
+	</div>
+</#if>
